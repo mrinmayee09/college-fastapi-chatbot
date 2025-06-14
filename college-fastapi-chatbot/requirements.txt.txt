@@ -1,7 +1,0 @@
-fastapi
-uvicorn
-transformers
-torch
-accelerate
-sentencepiece
-protobuf<4.0
