@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>UMIT Chatbot - Synthia</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f6fa;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .chat-container {
+      width: 400px;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .header {
+      background: #4e73df;
+      color: white;
+      padding: 15px;
+      display: flex;
+      align-items: center;
+    }
+
+    .header img {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      margin-right: 10px;
+    }
+
+    .chat-box {
+      padding: 15px;
+      height: 400px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .chat-msg {
+      margin-bottom: 10px;
+      max-width: 80%;
+    }
+
+    .bot-msg {
+      align-self: flex-start;
+      background: #f1f1f1;
+      padding: 10px;
+      border-radius: 10px;
+     
+    }
+
+    .user-msg {
+      align-self: flex-end;
+      background: #4e73df;
+      color: white;
+      padding: 10px;
+      border-radius: 10px;
+    }
+
+    .input-area {
+      padding: 10px;
+      border-top: 1px solid #ddd;
+      display: flex;
+      align-items: center;
+      background-color: #fff;
+    }
+
+    input[type=text]:focus {
+            outline: none;
+            border-color: #4e73df;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+            transition: all 0.3s ease;
+        }
+
+
+    .input-area input {
+      flex: 1;
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      outline: none;
+      font-size: 14px;
+    }
+
+    .input-area button {
+      background: #4e73df;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      margin-left: 8px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+  </style>
+</head>
+<body>
+
+<div class="chat-container">
+  <div class="header">
+    <img src="icon.png" alt="Avatar">
+    <div>
+      <strong>Synthia</strong><br>
+      <small>A chatbot to assist your queries about UMIT</small>
+    </div>
+  </div>
+  <div class="chat-box" id="chat-box">
+    <div class="chat-msg bot-msg">Hello aspirant, you are welcome to UMIT's bot assistance.<br>You can ask me anything.</div>
+  </div>
+  <div class="input-area">
+    <input type="text" id="user-input" placeholder="Type in..." onkeydown="checkEnter(event)">
+    <button onclick="sendMessage()">Send</button>
+  </div>
+</div>
+
+<script>
+  async function sendMessage() {
+    const input = document.getElementById("user-input");
+    const text = input.value.trim();
+    if (!text) return;
+
+    appendMessage(text, 'user-msg');
+    input.value = '';
+
+    try {
+      const res = await fetch(`http://localhost:8000/chat?question=${encodeURIComponent(text)}`);
+      const data = await res.json();
+      appendMessage(data.answer, 'bot-msg');
+    } catch (error) {
+      appendMessage("Error reaching server.", 'bot-msg');
+    }
+  }
+
+  function appendMessage(msg, className) {
+    const box = document.getElementById("chat-box");
+    const div = document.createElement("div");
+    div.className = `chat-msg ${className}`;
+    div.innerHTML = msg;
+    box.appendChild(div);
+    box.scrollTop = box.scrollHeight;
+  }
+
+  function checkEnter(event) {
+    if (event.key === "Enter") {
+      sendMessage();
+    }
+  }
+</script>
+
+</body>
+</html>
