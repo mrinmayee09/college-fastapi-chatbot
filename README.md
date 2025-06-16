@@ -6,6 +6,10 @@ This chatbot was developed as part of a mini project to assist students with com
 
 The system uses FastAPI for the backend and SentenceTransformers with FAISS for retrieving the most relevant answer based on user input. A simple HTML and JavaScript interface is provided for interaction.
 
+
+https://github.com/user-attachments/assets/5c92e627-4c66-4ed7-8cd2-a4013535b0d1
+
+
 ## Features
 
 * Fast and accurate semantic search
